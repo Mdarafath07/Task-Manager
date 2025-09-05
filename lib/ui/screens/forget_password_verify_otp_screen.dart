@@ -1,20 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:task_manager/ui/screens/login_screen.dart';
 import 'package:task_manager/ui/screens/singup_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
-import 'forget_password_verify_email_screen.dart';
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class ForgetPasswordVerifyOTPScreen extends StatefulWidget {
+  const ForgetPasswordVerifyOTPScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ForgetPasswordVerifyOTPScreen> createState() => _ForgetPasswordVerifyOTPScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailTEContreoller = TextEditingController();
-  final TextEditingController _passwordTEContreoller = TextEditingController();
+class _ForgetPasswordVerifyOTPScreenState extends State<ForgetPasswordVerifyOTPScreen> {
+  final TextEditingController _otpTEContreoller = TextEditingController();
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
 
   @override
@@ -31,20 +30,34 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const SizedBox(height: 85),
                   Text(
-                    "Get Started With",
+                    "Enter Your OTP",
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
+                  Text(
+                    "A  6 digit OTP has been sent to your email address",
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.grey,
+                    ),
+                  ),
                   const SizedBox(height: 24),
-                  TextFormField(
-                    controller: _emailTEContreoller,
-                    decoration: InputDecoration(hintText: "Email"),
+                  PinCodeTextField(
+                    length: 6,
+                    obscureText: false,
+                    animationType: AnimationType.fade,
+                    keyboardType: TextInputType.number,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.box,
+                      borderRadius: BorderRadius.circular(5),
+                      fieldHeight: 50,
+                      fieldWidth: 40,
+                      activeFillColor: Colors.white,
+                    ),
+                    animationDuration: Duration(milliseconds: 300),
+                    backgroundColor: Colors.transparent,
+                    controller: _otpTEContreoller,
+                     appContext: context,
                   ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _passwordTEContreoller,
-                    obscureText: true,
-                    decoration: InputDecoration(hintText: "Password"),
-                  ),
+
                   const SizedBox(height: 8),
                   FilledButton(
                     onPressed: () {},
@@ -54,26 +67,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: Column(
                       children: [
-                        TextButton(
-                          onPressed: _onTapForgetPasswordButton,
-                          child: Text(
-                            "Forget Password?",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
                         RichText(
                           text: TextSpan(
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500,
                             ),
-                            text: "Don't have an account?",
+                            text: "Already have an account?",
                             children: [
                               TextSpan(
-                                text: " Sing up",
+                                text: " Login",
                                 style: TextStyle(color: Colors.green),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = _onTapSingupButton,
+                                  ..onTap = _onTapLoginButton,
                               ),
                             ],
                           ),
@@ -90,19 +96,17 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _onTapSingupButton() {
-    Navigator.push(
+  void _onTapLoginButton() {
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => SingupScreen()),
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+        (protected) => false,
     );
   }
-  void _onTapForgetPasswordButton(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetPasswordVerifyEmailScreen()));
-  }
+
 
   void dispose() {
-    _emailTEContreoller.dispose();
-    _passwordTEContreoller.dispose();
+    _otpTEContreoller.dispose();
     super.dispose();
   }
 }
