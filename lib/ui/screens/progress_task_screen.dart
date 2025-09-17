@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/task_card.dart';
-import '../widgets/task_count_by_status_card.dart';
+
 
 class ProgressTaskScreen extends StatefulWidget {
   const ProgressTaskScreen({super.key});
@@ -19,7 +19,7 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
         child: Expanded(child:  ListView.separated(
           itemCount: 10,
           itemBuilder: (context, index){
-            return TaskCard();
+            return TaskCard(title: 'Progress title will be here', description: 'Description will be here', date: '11/11/2025', chipLable: 'Proress', chipBgColor: Colors.green,);
           },
           separatorBuilder: (context, index){
             return SizedBox(height: 8,);

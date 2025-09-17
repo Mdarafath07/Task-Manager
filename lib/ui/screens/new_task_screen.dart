@@ -42,7 +42,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
             Expanded(child:  ListView.separated(
               itemCount: 10,
               itemBuilder: (context, index){
-                return TaskCard();
+                return TaskCard(title: 'Title will be here', description: 'Description will be here', date: '11/11/2025', chipLable: 'New', chipBgColor: Colors.blue,);
               },
               separatorBuilder: (context, index){
                 return SizedBox(height: 8,);
