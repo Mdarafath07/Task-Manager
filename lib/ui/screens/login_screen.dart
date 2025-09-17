@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/ui/screens/main_nav_bar_holder_screen.dart';
 import 'package:task_manager/ui/screens/singup_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
@@ -47,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 8),
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: _onTapLoginButton,
                     child: Icon(Icons.arrow_circle_right_outlined),
                   ),
                   const SizedBox(height: 35),
@@ -96,8 +97,22 @@ class _LoginScreenState extends State<LoginScreen> {
       MaterialPageRoute(builder: (context) => SingupScreen()),
     );
   }
-  void _onTapForgetPasswordButton(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetPasswordVerifyEmailScreen()));
+
+  void _onTapForgetPasswordButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ForgetPasswordVerifyEmailScreen(),
+      ),
+    );
+  }
+
+  void _onTapLoginButton() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => MainNavBarHolderScreen()),
+      (protected) => false,
+    );
   }
 
   void dispose() {
