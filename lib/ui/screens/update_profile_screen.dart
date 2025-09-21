@@ -8,6 +8,7 @@ import 'package:task_manager/ui/widgets/tm_app_bar.dart';
 import '../widgets/photo_picker_field.dart';
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
+  static const String name = "/update-profile";
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();

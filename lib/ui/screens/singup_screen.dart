@@ -5,6 +5,7 @@ import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class SingupScreen extends StatefulWidget {
   const SingupScreen({super.key});
+  static const String name = "/Sing-up";
 
   @override
   State<SingupScreen> createState() => _SingupScreenState();

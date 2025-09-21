@@ -7,6 +7,7 @@ import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
+  static const String name = "/reset-password";
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();

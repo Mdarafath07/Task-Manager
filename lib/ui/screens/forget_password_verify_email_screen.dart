@@ -7,6 +7,7 @@ import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class ForgetPasswordVerifyEmailScreen extends StatefulWidget {
   const ForgetPasswordVerifyEmailScreen({super.key});
+  static const String name = "/forget-password-verify-email";
 
   @override
   State<ForgetPasswordVerifyEmailScreen> createState() => _ForgetPasswordVerifyEmailScreenState();

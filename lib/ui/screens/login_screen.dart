@@ -8,6 +8,7 @@ import 'forget_password_verify_email_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+  static const String name = "/Login";
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -108,9 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onTapLoginButton() {
-    Navigator.pushAndRemoveUntil(
+    Navigator.pushNamedAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => MainNavBarHolderScreen()),
+     MainNavBarHolderScreen.name,
       (protected) => false,
     );
   }

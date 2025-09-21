@@ -6,6 +6,7 @@ import '../widgets/tm_app_bar.dart';
 
 class MainNavBarHolderScreen extends StatefulWidget {
   const MainNavBarHolderScreen({super.key});
+  static const String name = "/main-nav-bar-holder";
 
   @override
   State<MainNavBarHolderScreen> createState() => _MainNavBarHolderScreenState();

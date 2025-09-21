@@ -5,6 +5,7 @@ import '../widgets/task_card.dart';
 
 class ProgressTaskScreen extends StatefulWidget {
   const ProgressTaskScreen({super.key});
+  static const String name = "/progress-task";
 
   @override
   State<ProgressTaskScreen> createState() => _ProgressTaskScreenState();

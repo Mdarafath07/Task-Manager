@@ -6,6 +6,7 @@ import '../widgets/task_count_by_status_card.dart';
 
 class NewTaskScreen extends StatefulWidget {
   const NewTaskScreen({super.key});
+  static const String name = "/new-task";
 
   @override
   State<NewTaskScreen> createState() => _NewTaskScreenState();
