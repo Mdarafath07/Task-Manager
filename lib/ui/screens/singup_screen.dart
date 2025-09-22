@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/login_screen.dart';
@@ -28,7 +29,9 @@ class _SingupScreenState extends State<SingupScreen> {
           child: Padding(
             padding: const EdgeInsets.all(18),
             child: Form(
+
               key: _fromKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -41,31 +44,62 @@ class _SingupScreenState extends State<SingupScreen> {
                   TextFormField(
                     controller: _firstNameTEController,
                     decoration: InputDecoration(hintText: "First Name"),
+                    validator: (String? value){
+                      if(value?.trim().isEmpty??false){
+                        return "Enter a valid first name";
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _lastNameTEController,
                     decoration: InputDecoration(hintText: "Last Name"),
+                    validator: (String? value){
+                      if(value?.trim().isEmpty??false){
+                        return "Enter a valid last name";
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _emailTEController,
                     decoration: InputDecoration(hintText: "Email"),
+                    validator: (String? value){
+                      String inputText = value ?? "";
+                      if(EmailValidator.validate(inputText)==false){
+                        return "Enter a valid email";
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _mobileNumberTEController,
                     decoration: InputDecoration(hintText: "Mobile Number"),
+                    validator: (String? value){
+                      if(value?.trim().isEmpty??false){
+                        return "Enter your valid mobile number";
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _passwordTEContreoller,
                     obscureText: true,
                     decoration: InputDecoration(hintText: "Password"),
+                    validator: (String? value){
+                      if((value?.length??0)>6){
+                        return "Enter a password more than 6 characters";
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 8),
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: _onTapSubmitButton,
                     child: Icon(Icons.arrow_circle_right_outlined),
                   ),
                   const SizedBox(height: 35),
@@ -98,6 +132,10 @@ class _SingupScreenState extends State<SingupScreen> {
         ),
       ),
     );
+  }
+  void _onTapSubmitButton(){
+
+
   }
 
   void _onTapLoginButton(){
