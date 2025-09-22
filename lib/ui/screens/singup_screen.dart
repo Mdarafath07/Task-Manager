@@ -20,6 +20,7 @@ class _SingupScreenState extends State<SingupScreen> {
   final TextEditingController _mobileNumberTEController =
       TextEditingController();
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
+  bool _singUpInprogress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,7 @@ class _SingupScreenState extends State<SingupScreen> {
                   ),
                   const SizedBox(height: 24),
                   TextFormField(
+                    textInputAction: TextInputAction.next,
                     controller: _firstNameTEController,
                     decoration: InputDecoration(hintText: "First Name"),
                     validator: (String? value){
@@ -53,6 +55,7 @@ class _SingupScreenState extends State<SingupScreen> {
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
+                    textInputAction: TextInputAction.next,
                     controller: _lastNameTEController,
                     decoration: InputDecoration(hintText: "Last Name"),
                     validator: (String? value){
@@ -64,6 +67,7 @@ class _SingupScreenState extends State<SingupScreen> {
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
+                    textInputAction: TextInputAction.next,
                     controller: _emailTEController,
                     decoration: InputDecoration(hintText: "Email"),
                     validator: (String? value){
@@ -76,6 +80,8 @@ class _SingupScreenState extends State<SingupScreen> {
                   ),
                   const SizedBox(height: 8),
                   TextFormField(
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
                     controller: _mobileNumberTEController,
                     decoration: InputDecoration(hintText: "Mobile Number"),
                     validator: (String? value){
@@ -91,7 +97,7 @@ class _SingupScreenState extends State<SingupScreen> {
                     obscureText: true,
                     decoration: InputDecoration(hintText: "Password"),
                     validator: (String? value){
-                      if((value?.length??0)>6){
+                      if((value?.length??0)<=6){
                         return "Enter a password more than 6 characters";
                       }
                       return null;
@@ -134,6 +140,9 @@ class _SingupScreenState extends State<SingupScreen> {
     );
   }
   void _onTapSubmitButton(){
+    if(_fromKey.currentState!.validate()){
+
+    }
 
 
   }
@@ -143,6 +152,24 @@ class _SingupScreenState extends State<SingupScreen> {
       context,MaterialPageRoute(builder: (context) =>  LoginScreen())
     );
   }
+
+
+  Future<void> _singup() async {
+    _singUpInprogress = true;
+    setState(() {
+
+    });
+    Map<String, dynamic> jsonBody = {
+      "email":_emailTEController.text.trim(),
+      "firstName":_firstNameTEController.text.trim(),
+      "lastName":_lastNameTEController.text.trim(),
+      "mobile":_mobileNumberTEController.text.trim(),
+      "password":_passwordTEContreoller.text,
+    };
+
+  }
+
+
   void dispose() {
     _emailTEController.dispose();
     _passwordTEContreoller.dispose();
