@@ -1,11 +1,16 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/services/api_caller.dart';
 import 'package:task_manager/ui/screens/login_screen.dart';
-import 'package:task_manager/ui/widgets/screen_background.dart';
+
+import '../../data/utils/urls.dart';
+import '../widgets/screen_background.dart';
+import '../widgets/snack_ber_message.dart';
 
 class SingupScreen extends StatefulWidget {
   const SingupScreen({super.key});
+
   static const String name = "/Sing-up";
 
   @override
@@ -18,7 +23,7 @@ class _SingupScreenState extends State<SingupScreen> {
   final TextEditingController _firstNameTEController = TextEditingController();
   final TextEditingController _lastNameTEController = TextEditingController();
   final TextEditingController _mobileNumberTEController =
-      TextEditingController();
+  TextEditingController();
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
   bool _singUpInprogress = false;
 
@@ -39,15 +44,20 @@ class _SingupScreenState extends State<SingupScreen> {
                   const SizedBox(height: 85),
                   Text(
                     "Join With Us",
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .titleLarge,
                   ),
                   const SizedBox(height: 24),
                   TextFormField(
                     textInputAction: TextInputAction.next,
                     controller: _firstNameTEController,
                     decoration: InputDecoration(hintText: "First Name"),
-                    validator: (String? value){
-                      if(value?.trim().isEmpty??false){
+                    validator: (String? value) {
+                      if (value
+                          ?.trim()
+                          .isEmpty ?? false) {
                         return "Enter a valid first name";
                       }
                       return null;
@@ -58,8 +68,10 @@ class _SingupScreenState extends State<SingupScreen> {
                     textInputAction: TextInputAction.next,
                     controller: _lastNameTEController,
                     decoration: InputDecoration(hintText: "Last Name"),
-                    validator: (String? value){
-                      if(value?.trim().isEmpty??false){
+                    validator: (String? value) {
+                      if (value
+                          ?.trim()
+                          .isEmpty ?? false) {
                         return "Enter a valid last name";
                       }
                       return null;
@@ -70,9 +82,9 @@ class _SingupScreenState extends State<SingupScreen> {
                     textInputAction: TextInputAction.next,
                     controller: _emailTEController,
                     decoration: InputDecoration(hintText: "Email"),
-                    validator: (String? value){
+                    validator: (String? value) {
                       String inputText = value ?? "";
-                      if(EmailValidator.validate(inputText)==false){
+                      if (EmailValidator.validate(inputText) == false) {
                         return "Enter a valid email";
                       }
                       return null;
@@ -84,8 +96,10 @@ class _SingupScreenState extends State<SingupScreen> {
                     textInputAction: TextInputAction.next,
                     controller: _mobileNumberTEController,
                     decoration: InputDecoration(hintText: "Mobile Number"),
-                    validator: (String? value){
-                      if(value?.trim().isEmpty??false){
+                    validator: (String? value) {
+                      if (value
+                          ?.trim()
+                          .isEmpty ?? false) {
                         return "Enter your valid mobile number";
                       }
                       return null;
@@ -96,17 +110,23 @@ class _SingupScreenState extends State<SingupScreen> {
                     controller: _passwordTEContreoller,
                     obscureText: true,
                     decoration: InputDecoration(hintText: "Password"),
-                    validator: (String? value){
-                      if((value?.length??0)<=6){
+                    validator: (String? value) {
+                      if ((value?.length ?? 0) <= 6) {
                         return "Enter a password more than 6 characters";
                       }
                       return null;
                     },
                   ),
                   const SizedBox(height: 8),
-                  FilledButton(
-                    onPressed: _onTapSubmitButton,
-                    child: Icon(Icons.arrow_circle_right_outlined),
+                  Visibility(
+                    visible: _singUpInprogress == false,
+                    replacement: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: FilledButton(
+                      onPressed: _onTapSubmitButton,
+                      child: Icon(Icons.arrow_circle_right_outlined),
+                    ),
                   ),
                   const SizedBox(height: 35),
                   Center(
@@ -123,7 +143,8 @@ class _SingupScreenState extends State<SingupScreen> {
                               TextSpan(
                                 text: " Login",
                                 style: TextStyle(color: Colors.green),
-                                recognizer: TapGestureRecognizer()..onTap = _onTapLoginButton,
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = _onTapLoginButton,
                               ),
                             ],
                           ),
@@ -139,17 +160,17 @@ class _SingupScreenState extends State<SingupScreen> {
       ),
     );
   }
-  void _onTapSubmitButton(){
-    if(_fromKey.currentState!.validate()){
+
+  void _onTapSubmitButton() {
+    if (_fromKey.currentState!.validate()) {
+      _singup();
 
     }
-
-
   }
 
-  void _onTapLoginButton(){
+  void _onTapLoginButton() {
     Navigator.pop(
-      context,MaterialPageRoute(builder: (context) =>  LoginScreen())
+        context, MaterialPageRoute(builder: (context) => LoginScreen())
     );
   }
 
@@ -159,14 +180,37 @@ class _SingupScreenState extends State<SingupScreen> {
     setState(() {
 
     });
-    Map<String, dynamic> jsonBody = {
-      "email":_emailTEController.text.trim(),
-      "firstName":_firstNameTEController.text.trim(),
-      "lastName":_lastNameTEController.text.trim(),
-      "mobile":_mobileNumberTEController.text.trim(),
-      "password":_passwordTEContreoller.text,
+    Map<String, dynamic> requestBody = {
+      "email": _emailTEController.text.trim(),
+      "firstName": _firstNameTEController.text.trim(),
+      "lastName": _lastNameTEController.text.trim(),
+      "mobile": _mobileNumberTEController.text.trim(),
+      "password": _passwordTEContreoller.text,
     };
+    final ApiResponse response = await ApiCaller.postRequest(
+        url: Urls.registrationUrl,
+      body: requestBody
+    );
+    _singUpInprogress =false;
+    setState(() {
 
+    });
+    if(response.isSuccess){
+      _clearTextFields();
+      showSnackBarMessage(context, "Registration Success!");
+
+    }else{
+      showSnackBarMessage(context, response.errorMessage!);
+
+    }
+
+  }
+  void _clearTextFields() {
+    _emailTEController.clear();
+    _passwordTEContreoller.clear();
+    _firstNameTEController.clear();
+    _lastNameTEController.clear();
+    _mobileNumberTEController.clear();
   }
 
 

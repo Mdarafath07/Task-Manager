@@ -38,7 +38,9 @@ class ApiCaller {
  static Future<ApiResponse> postRequest({required String url, Map<String,dynamic>? body}) async {
     Uri uri = Uri.parse(url);
     _logRequest(url, body: body);
-    Response response = await post(uri);
+    Response response = await post(uri,
+        headers: {"content-type": "application/json"},
+        body: jsonEncode(body));
     _logRespose(url, response);
     print(uri);
     print(response.body);
