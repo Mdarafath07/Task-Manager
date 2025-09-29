@@ -1,8 +1,10 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/models/user_model.dart';
 import 'package:task_manager/data/services/api_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
+import 'package:task_manager/ui/controllers/auth_controller.dart';
 import 'package:task_manager/ui/screens/main_nav_bar_holder_screen.dart';
 import 'package:task_manager/ui/screens/singup_screen.dart';
 import 'package:task_manager/ui/widgets/centered_progress_indicator.dart';
@@ -152,6 +154,9 @@ class _LoginScreenState extends State<LoginScreen> {
     };
     final ApiResponse response = await ApiCaller.postRequest(url: Urls.loginUrl, body: requestBody);
     if(response.isSuccess && response.responseData["status"] == "success"){
+      UserModel model = UserModel.fromJson(response.responseData["data"]);
+      String accessToken =response.responseData["token"];
+      await AuthController.saveUserData(model, accessToken);
       Navigator.pushNamedAndRemoveUntil(
         context,
         MainNavBarHolderScreen.name,
