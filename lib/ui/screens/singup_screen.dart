@@ -5,6 +5,7 @@ import 'package:task_manager/data/services/api_caller.dart';
 import 'package:task_manager/ui/screens/login_screen.dart';
 
 import '../../data/utils/urls.dart';
+import '../widgets/centered_progress_indicator.dart';
 import '../widgets/screen_background.dart';
 import '../widgets/snack_ber_message.dart';
 
@@ -120,9 +121,7 @@ class _SingupScreenState extends State<SingupScreen> {
                   const SizedBox(height: 8),
                   Visibility(
                     visible: _singUpInprogress == false,
-                    replacement: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    replacement: CenteredProgressIndicator(),
                     child: FilledButton(
                       onPressed: _onTapSubmitButton,
                       child: Icon(Icons.arrow_circle_right_outlined),
@@ -223,3 +222,5 @@ class _SingupScreenState extends State<SingupScreen> {
     super.dispose();
   }
 }
+
+
