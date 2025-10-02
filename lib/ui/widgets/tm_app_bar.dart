@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/ui/controllers/auth_controller.dart';
+import 'package:task_manager/ui/screens/login_screen.dart';
 import 'package:task_manager/ui/screens/update_profile_screen.dart';
-class TMAppBar extends StatelessWidget implements PreferredSizeWidget{
-  const TMAppBar({
-    super.key, this.fromUpdateProfile,
-  });
+
+class TMAppBar extends StatefulWidget implements PreferredSizeWidget {
+  const TMAppBar({super.key, this.fromUpdateProfile});
+
   final bool? fromUpdateProfile;
 
+  @override
+  State<TMAppBar> createState() => _TMAppBarState();
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+
+class _TMAppBarState extends State<TMAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.green,
       title: GestureDetector(
-        onTap: (){
-          if(fromUpdateProfile ?? false){
+        onTap: () {
+          if (widget.fromUpdateProfile ?? false) {
             return;
           }
           Navigator.pushNamed(context, UpdateProfileScreen.name);
@@ -41,13 +51,16 @@ class TMAppBar extends StatelessWidget implements PreferredSizeWidget{
           ],
         ),
       ),
-      actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.login_rounded)),
-      ],
+      actions: [IconButton(onPressed: _singOut, icon: Icon(Icons.login_rounded))],
     );
   }
 
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Future<void> _singOut() async {
+    await AuthController.clearUserData();
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      LoginScreen.name,
+      (predicate) => false,
+    );
+  }
 }

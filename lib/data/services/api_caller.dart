@@ -4,9 +4,9 @@ import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
 class ApiCaller {
- static final Logger _logger = Logger();
+  static final Logger _logger = Logger();
 
- static Future<ApiResponse> getRequest({required String url}) async {
+  static Future<ApiResponse> getRequest({required String url}) async {
     Uri uri = Uri.parse(url);
     _logRequest(url);
     Response response = await get(uri);
@@ -32,16 +32,22 @@ class ApiCaller {
         isSuccess: false,
         responseCode: statusCode,
         responseData: decodedData,
-          errorMessage: decodedData["data"],
+        errorMessage: decodedData["data"],
       );
     }
   }
- static Future<ApiResponse> postRequest({required String url, Map<String,dynamic>? body}) async {
+
+  static Future<ApiResponse> postRequest({
+    required String url,
+    Map<String, dynamic>? body,
+  }) async {
     Uri uri = Uri.parse(url);
     _logRequest(url, body: body);
-    Response response = await post(uri,
-        headers: {"content-type": "application/json"},
-        body: jsonEncode(body));
+    Response response = await post(
+      uri,
+      headers: {"content-type": "application/json"},
+      body: jsonEncode(body),
+    );
     _logRespose(url, response);
     print(uri);
     print(response.body);
@@ -68,15 +74,19 @@ class ApiCaller {
       );
     }
   }
- static void _logRequest(String url, {Map<String, dynamic>? body}){
-    _logger.i("URL => $url\n"
-        "Request Body : $body"
+
+  static void _logRequest(String url, {Map<String, dynamic>? body}) {
+    _logger.i(
+      "URL => $url\n"
+      "Request Body : $body",
     );
   }
- static void _logRespose(String url, Response response){
-    _logger.i("URL => $url\n"
-        "Status Code : ${response.statusCode}\n"
-        "Body : ${response.body}"
+
+  static void _logRespose(String url, Response response) {
+    _logger.i(
+      "URL => $url\n"
+      "Status Code : ${response.statusCode}\n"
+      "Body : ${response.body}",
     );
   }
 }
