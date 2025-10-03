@@ -60,7 +60,7 @@ class _TaskManagerAppState extends State<TaskManagerApp> {
         )
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: SingupScreen.name,
+      initialRoute: SplashScreen.name,
       routes: {
         SplashScreen.name : (_) => SplashScreen(),
         LoginScreen.name : (_) => LoginScreen(),

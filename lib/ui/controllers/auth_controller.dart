@@ -6,7 +6,7 @@ import '../../data/models/user_model.dart';
 
 class AuthController {
   static const String _accessTokenkey = "token";
-  static const String _userModelkey = "token";
+  static const String _userModelkey = "user-data";
 
  static String? accessToken;
   static UserModel? userModel;

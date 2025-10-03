@@ -17,7 +17,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _moveToNextScreen();
   }
@@ -25,14 +24,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _moveToNextScreen() async {
     await Future.delayed(Duration(seconds: 3));
     final bool isLoggedIn = await AuthController.isUserAlreadyLoggedIn();
-    if(isLoggedIn){
+    if (isLoggedIn) {
       await AuthController.getUserData();
       Navigator.pushReplacementNamed(context, MainNavBarHolderScreen.name);
-
-    }else{
+    } else {
       Navigator.pushReplacementNamed(context, LoginScreen.name);
     }
-
   }
 
   @override
