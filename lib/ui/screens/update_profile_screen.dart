@@ -1,11 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 import 'package:task_manager/ui/widgets/tm_app_bar.dart';
 
 import '../widgets/photo_picker_field.dart';
+
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
   static const String name = "/update-profile";
@@ -20,16 +19,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController _firstNameTEController = TextEditingController();
   final TextEditingController _lastNameTEController = TextEditingController();
   final TextEditingController _mobileNumberTEController =
-  TextEditingController();
+      TextEditingController();
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
-  final ImagePicker _imagePicker =ImagePicker();
+  final ImagePicker _imagePicker = ImagePicker();
   XFile? _selectedImagel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TMAppBar(
-        fromUpdateProfile: true,
-      ),
+      appBar: TMAppBar(fromUpdateProfile: true),
 
       body: ScreenBackground(
         child: SingleChildScrollView(
@@ -38,11 +35,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             child: Form(
               key: _fromKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start ,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 24,),
-                  Text("Update Profile",style: TextTheme.of(context).titleLarge,),
-                  const SizedBox(height: 24,),
+                  const SizedBox(height: 24),
+                  Text(
+                    "Update Profile",
+                    style: TextTheme.of(context).titleLarge,
+                  ),
+                  const SizedBox(height: 24),
                   PhotoPickerField(
                     onTap: _pickImage,
                     selectedPhoto: _selectedImagel,
@@ -79,9 +79,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     child: Icon(Icons.arrow_circle_right_outlined),
                   ),
                   const SizedBox(height: 35),
-        
                 ],
-        
               ),
             ),
           ),
@@ -89,15 +87,17 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       ),
     );
   }
-  Future<void> _pickImage() async{
-    XFile? pickImage= await _imagePicker.pickImage(source: ImageSource.gallery);
-    if(pickImage != null){
-      _selectedImagel =pickImage;
-      setState(() {
 
-      });
+  Future<void> _pickImage() async {
+    XFile? pickImage = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (pickImage != null) {
+      _selectedImagel = pickImage;
+      setState(() {});
     }
   }
+
   void dispose() {
     _emailTEController.dispose();
     _passwordTEContreoller.dispose();
@@ -107,5 +107,3 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     super.dispose();
   }
 }
-
-

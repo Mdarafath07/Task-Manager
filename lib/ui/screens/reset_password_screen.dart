@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/forget_password_verify_otp_screen.dart';
 import 'package:task_manager/ui/screens/login_screen.dart';
-import 'package:task_manager/ui/screens/singup_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -14,11 +13,9 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-
-  final TextEditingController _PasswordTEContreoller =
-      TextEditingController();
+  final TextEditingController _PasswordTEContreoller = TextEditingController();
   final TextEditingController _confirmPasswordTEContreoller =
-  TextEditingController();
+      TextEditingController();
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
 
   @override
@@ -52,7 +49,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _confirmPasswordTEContreoller,
-                    decoration: InputDecoration(hintText: "Corfirm password Password"),
+                    decoration: InputDecoration(
+                      hintText: "Corfirm password Password",
+                    ),
                   ),
                   const SizedBox(height: 8),
                   FilledButton(

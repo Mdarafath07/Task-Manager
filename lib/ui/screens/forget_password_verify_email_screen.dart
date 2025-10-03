@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/forget_password_verify_otp_screen.dart';
 import 'package:task_manager/ui/screens/login_screen.dart';
-import 'package:task_manager/ui/screens/singup_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class ForgetPasswordVerifyEmailScreen extends StatefulWidget {
@@ -10,10 +9,12 @@ class ForgetPasswordVerifyEmailScreen extends StatefulWidget {
   static const String name = "/forget-password-verify-email";
 
   @override
-  State<ForgetPasswordVerifyEmailScreen> createState() => _ForgetPasswordVerifyEmailScreenState();
+  State<ForgetPasswordVerifyEmailScreen> createState() =>
+      _ForgetPasswordVerifyEmailScreenState();
 }
 
-class _ForgetPasswordVerifyEmailScreenState extends State<ForgetPasswordVerifyEmailScreen> {
+class _ForgetPasswordVerifyEmailScreenState
+    extends State<ForgetPasswordVerifyEmailScreen> {
   final TextEditingController _emailTEContreoller = TextEditingController();
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
 
@@ -36,9 +37,9 @@ class _ForgetPasswordVerifyEmailScreenState extends State<ForgetPasswordVerifyEm
                   ),
                   Text(
                     "A  6 digit OTP will be sent to your email address",
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.grey,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(color: Colors.grey),
                   ),
                   const SizedBox(height: 24),
                   TextFormField(
@@ -89,10 +90,13 @@ class _ForgetPasswordVerifyEmailScreenState extends State<ForgetPasswordVerifyEm
       MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
-  void _onTapNextButton(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetPasswordVerifyOTPScreen()));
-  }
 
+  void _onTapNextButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ForgetPasswordVerifyOTPScreen()),
+    );
+  }
 
   void dispose() {
     _emailTEContreoller.dispose();
