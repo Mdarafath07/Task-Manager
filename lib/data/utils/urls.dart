@@ -9,6 +9,8 @@
   static const String CancelledTaskListUrl = "$_baseUrl/listTaskByStatus/Cancelled";
   static const String CompletedTaskListUrl = "$_baseUrl/listTaskByStatus/Completed";
 
-  static String updateTaskStatusUrl(String taskId, String status) =>
-      '$_baseUrl/updateTaskStatus/$taskId/$status';
+  static String updateTaskStatusUrl(String Id, String status) =>
+      '$_baseUrl/updateTaskStatus/$Id/$status';
+
+  static String deleteTaskUrl(String Id) => '$_baseUrl/deleteTask/$Id';
 }

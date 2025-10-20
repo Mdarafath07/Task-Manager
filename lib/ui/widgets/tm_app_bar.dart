@@ -35,13 +35,13 @@ class _TMAppBarState extends State<TMAppBar> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Md Arafath",
+                  AuthController.userModel?.fullName ?? "",
                   style: Theme.of(
                     context,
                   ).textTheme.titleSmall?.copyWith(color: Colors.white),
                 ),
                 Text(
-                  "email@gmail.com",
+                  AuthController.userModel?.email ?? "",
                   style: Theme.of(
                     context,
                   ).textTheme.bodySmall?.copyWith(color: Colors.white),
