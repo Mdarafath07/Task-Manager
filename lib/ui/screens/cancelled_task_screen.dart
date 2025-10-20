@@ -7,42 +7,42 @@ import '../widgets/snack_ber_message.dart';
 import '../widgets/task_card.dart';
 
 
-class ProgressTaskScreen extends StatefulWidget {
-  const ProgressTaskScreen({super.key});
+class CancelledTaskScreen extends StatefulWidget {
+  const CancelledTaskScreen({super.key});
 
-  static const String name = "/progress-task";
+  static const String name = "/cancelled-task";
 
   @override
-  State<ProgressTaskScreen> createState() => _ProgressTaskScreenState();
+  State<CancelledTaskScreen> createState() => _CancelledTaskScreenState();
 }
 
-class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
-  bool _getProgressTaskInProgress = false;
+class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
+  bool _getCancelledTaskInProgress = false;
 
-  List<TaskModel> _progressTaskList = [];
+  List<TaskModel> _cancelledTaskList = [];
 
   @override
   void initState() {
     super.initState();
-    _getAllProgressTask();
+    _getAllCancelledTask();
   }
 
 
-  Future<void> _getAllProgressTask() async {
-    _getProgressTaskInProgress = true;
+  Future<void> _getAllCancelledTask() async {
+    _getCancelledTaskInProgress = true;
     setState(() {});
     final ApiResponse response =
-    await ApiCaller.getRequest(url: Urls.progressTaskListUrl);
+    await ApiCaller.getRequest(url: Urls.CancelledTaskListUrl);
     if (response.isSuccess) {
       List<TaskModel> list = [];
       for (Map<String, dynamic> jesonData in response.responseData["data"]) {
         list.add(TaskModel.fromJson(jesonData));
       }
-      _progressTaskList = list;
+      _cancelledTaskList = list;
     } else {
       showSnackBarMessage(context, response.errorMessage!);
     }
-    _getProgressTaskInProgress = false;
+    _getCancelledTaskInProgress = false;
     setState(() {});
   }
 
@@ -53,14 +53,14 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Visibility(
-          visible: _getProgressTaskInProgress == false,
+          visible: _getCancelledTaskInProgress == false,
           child: ListView.separated(
-            itemCount: _progressTaskList.length,
+            itemCount: _cancelledTaskList.length,
             itemBuilder: (context, index) {
               return TaskCard(
-                taskModel: _progressTaskList[index], refreshParent: () {
-                _getAllProgressTask();
-              }, color: Colors.grey,);
+                taskModel: _cancelledTaskList[index], refreshParent: () {
+                _getAllCancelledTask();
+              }, color: Colors.red,);
             },
             separatorBuilder: (context, index) {
               return SizedBox(height: 8,);

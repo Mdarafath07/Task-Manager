@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/models/task_model.dart';
 import 'package:task_manager/data/services/api_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/screens/add_new_task_screen.dart';
@@ -11,6 +12,7 @@ import '../widgets/task_count_by_status_card.dart';
 
 class NewTaskScreen extends StatefulWidget {
   const NewTaskScreen({super.key});
+
   static const String name = "/new-task";
 
   @override
@@ -19,12 +21,15 @@ class NewTaskScreen extends StatefulWidget {
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
   bool _getTaskStatusCountInProgress = false;
+  bool _getNewTaskInProgress = false;
   List<TaskStatusCountModel> _taskStatusCountList = [];
+  List<TaskModel> _newTaskList = [];
 
   @override
   void initState() {
     super.initState();
     _getAllTaskStatusCount();
+    _getAllNewTask();
   }
 
 
@@ -43,6 +48,23 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       showSnackBarMessage(context, response.errorMessage!);
     }
     _getTaskStatusCountInProgress = false;
+    setState(() {});
+  }
+
+  Future<void> _getAllNewTask() async {
+    _getNewTaskInProgress = true;
+    setState(() {});
+    final ApiResponse response = await ApiCaller.getRequest(url: Urls.newTaskListUrl,);
+    if (response.isSuccess) {
+      List<TaskModel> list = [];
+      for (Map<String, dynamic> jesonData in response.responseData["data"]) {
+        list.add(TaskModel.fromJson(jesonData));
+      }
+      _newTaskList = list;
+    } else {
+      showSnackBarMessage(context, response.errorMessage!);
+    }
+    _getNewTaskInProgress = false;
     setState(() {});
   }
 
@@ -75,20 +97,23 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               ),
             ),
             Expanded(
-              child: ListView.separated(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return TaskCard(
-                    title: 'Title will be here',
-                    description: 'Description will be here',
-                    date: '11/11/2025',
-                    chipLable: 'New',
-                    chipBgColor: Colors.blue,
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 8,);
-                },
+              child: Visibility(
+                 visible: _getNewTaskInProgress == false,
+                replacement: CenteredProgressIndicator(),
+                child: ListView.separated(
+                  itemCount: _newTaskList.length,
+                  itemBuilder: (context, index) {
+                    return TaskCard(
+                     taskModel: _newTaskList[index],
+                      refreshParent: (){
+                       _getAllNewTask();
+                      }, color: Colors.purple,
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 8,);
+                  },
+                ),
               ),
             )
           ],
@@ -97,7 +122,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: _onTapANewTaskButton,
         child: const Icon(Icons.add, color: Colors.white,),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.purple.withOpacity(0.5),
       ),
     );
   }
@@ -108,6 +133,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       MaterialPageRoute(builder: (context) => const AddNewTaskScreen()),
     );
   }
-  }
+}
 
 

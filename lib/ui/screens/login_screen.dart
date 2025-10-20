@@ -15,6 +15,7 @@ import 'forget_password_verify_email_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
   static const String name = "/Login";
 
   @override
@@ -136,43 +137,37 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onTapLoginButton() {
-    if(_fromKey.currentState!.validate()){
+    if (_fromKey.currentState!.validate()) {
       _login();
-
     }
-
   }
-  Future<void> _login() async{
+
+  Future<void> _login() async {
     _loginInProgress = true;
-    setState(() {
-
-    });
-    Map<String,dynamic> requestBody ={
-      "email":_emailTEContreoller.text,
-      "password":_passwordTEContreoller.text,
-
+    setState(() {});
+    Map<String, dynamic> requestBody = {
+      "email": _emailTEContreoller.text,
+      "password": _passwordTEContreoller.text,
     };
-    final ApiResponse response = await ApiCaller.postRequest(url: Urls.loginUrl, body: requestBody);
-    if(response.isSuccess && response.responseData["status"] == "success"){
+    final ApiResponse response = await ApiCaller.postRequest(
+      url: Urls.loginUrl,
+      body: requestBody,
+    );
+    if (response.isSuccess && response.responseData["status"] == "success") {
       UserModel model = UserModel.fromJson(response.responseData["data"]);
-      String accessToken =response.responseData["token"];
+      String accessToken = response.responseData["token"];
       await AuthController.saveUserData(model, accessToken);
       Navigator.pushNamedAndRemoveUntil(
         context,
         MainNavBarHolderScreen.name,
-            (protected) => false,
+        (protected) => false,
       );
-
-
-    }else{
+    } else {
       _loginInProgress = false;
-      setState(() {
-      });
+      setState(() {});
       final message = response.responseData["data"];
       showSnackBarMessage(context, message ?? response.errorMessage!);
     }
-
-
   }
 
   void dispose() {

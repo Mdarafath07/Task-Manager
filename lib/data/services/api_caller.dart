@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
+import 'package:task_manager/app.dart';
 import 'package:task_manager/ui/controllers/auth_controller.dart';
+import 'package:task_manager/ui/screens/login_screen.dart';
 
 class ApiCaller {
   static final Logger _logger = Logger();
@@ -28,6 +31,14 @@ class ApiCaller {
         isSuccess: true,
         responseCode: statusCode,
         responseData: decodedData,
+      );
+    } else if (statusCode == 401) {
+      await _moveToLogin();
+      return ApiResponse(
+        isSuccess: false,
+        responseCode: statusCode,
+        errorMessage: "un-authorized",
+        responseData: null,
       );
     } else {
       //faild
@@ -70,6 +81,14 @@ class ApiCaller {
         responseCode: statusCode,
         responseData: decodedData,
       );
+    } else if (statusCode == 401) {
+      await _moveToLogin();
+      return ApiResponse(
+        isSuccess: false,
+        responseCode: statusCode,
+        errorMessage: "un_authorized",
+        responseData: null,
+      );
     } else {
       //faild
       final decodedData = jsonDecode(response.body);
@@ -95,6 +114,13 @@ class ApiCaller {
       "Status Code : ${response.statusCode}\n"
       "Body : ${response.body}",
     );
+  }
+
+  static Future<void> _moveToLogin() async {
+    await AuthController.clearUserData();
+    Navigator.pushNamedAndRemoveUntil(
+        TaskManagerApp.navigator.currentContext!, LoginScreen.name, (
+        predicate) => false);
   }
 }
 

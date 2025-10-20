@@ -19,7 +19,7 @@ class _TMAppBarState extends State<TMAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.purple,
       title: GestureDetector(
         onTap: () {
           if (widget.fromUpdateProfile ?? false) {
@@ -51,7 +51,9 @@ class _TMAppBarState extends State<TMAppBar> {
           ],
         ),
       ),
-      actions: [IconButton(onPressed: _singOut, icon: Icon(Icons.login_rounded))],
+      actions: [
+        IconButton(onPressed: _singOut, icon: Icon(Icons.login_rounded),color: Colors.white,),
+      ],
     );
   }
 
