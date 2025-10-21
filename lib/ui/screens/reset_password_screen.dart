@@ -72,7 +72,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             children: [
                               TextSpan(
                                 text: " Login",
-                                style: TextStyle(color: Colors.green),
+                                style: TextStyle(color: Colors.purple),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = _onTapLoginButton,
                               ),

@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               TextSpan(
                                 text: " Sing up",
-                                style: TextStyle(color: Colors.green),
+                                style: TextStyle(color: Colors.purple),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = _onTapSingupButton,
                               ),
