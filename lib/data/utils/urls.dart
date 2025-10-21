@@ -13,4 +13,5 @@
       '$_baseUrl/updateTaskStatus/$Id/$status';
 
   static String deleteTaskUrl(String Id) => '$_baseUrl/deleteTask/$Id';
+  static const String updateProfileUrl = '$_baseUrl/ProfileUpdate';
 }

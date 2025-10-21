@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/controllers/auth_controller.dart';
 import 'package:task_manager/ui/screens/login_screen.dart';
@@ -18,6 +21,7 @@ class TMAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _TMAppBarState extends State<TMAppBar> {
   @override
   Widget build(BuildContext context) {
+    final profilePhoto = AuthController.userModel!.photo;
     return AppBar(
       backgroundColor: Colors.purple,
       title: GestureDetector(
@@ -30,7 +34,15 @@ class _TMAppBarState extends State<TMAppBar> {
         child: Row(
           spacing: 8,
           children: [
-            CircleAvatar(),
+            CircleAvatar(
+              backgroundImage: profilePhoto.isNotEmpty
+                  ? MemoryImage(Uint8List.fromList(List<int>.from(jsonDecode(profilePhoto))))
+                  : null,
+              child: profilePhoto.isNotEmpty
+                  ? null
+                  : const Icon(Icons.person, color: Colors.white),
+            ),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
