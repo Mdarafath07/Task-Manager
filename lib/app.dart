@@ -57,13 +57,13 @@ class TaskManagerApp extends StatelessWidget {
         ForgetPasswordVerifyEmailScreen.name: (_) =>
             ForgetPasswordVerifyEmailScreen(),
         ForgetPasswordVerifyOTPScreen.name: (_) =>
-            ForgetPasswordVerifyOTPScreen(),
+            ForgetPasswordVerifyOTPScreen(email: '',),
         AddNewTaskScreen.name: (_) => AddNewTaskScreen(),
         NewTaskScreen.name: (_) => NewTaskScreen(),
         ProgressTaskScreen.name: (_) => ProgressTaskScreen(),
         CancelledTaskScreen.name: (_) => CancelledTaskScreen(),
         CompletedTaskScreen.name: (_) => CompletedTaskScreen(),
-        ResetPasswordScreen.name: (_) => ResetPasswordScreen(),
+        ResetPasswordScreen.name: (_) => ResetPasswordScreen(email: '', otp: '',),
       },
     );
   }

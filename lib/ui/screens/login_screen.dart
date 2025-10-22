@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _loginInProgress = false;
       setState(() {});
       final message = response.responseData["data"];
-      showSnackBarMessage(context, message ?? response.errorMessage!);
+      showSnackBarMessage(context, message ?? response.errorMessage!,);
     }
   }
 

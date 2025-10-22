@@ -4,8 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:task_manager/app.dart';
+
 import 'package:task_manager/ui/controllers/auth_controller.dart';
 import 'package:task_manager/ui/screens/login_screen.dart';
+
+import '../utils/urls.dart';
 
 class ApiCaller {
   static final Logger _logger = Logger();
@@ -101,18 +104,80 @@ class ApiCaller {
     }
   }
 
+
+  static Future<ApiResponse> recoverVerifyEmail({required String email}) async {
+    try {
+      final String url = Urls.recoverVerifyEmailUrl(email);
+      return await getRequest(url: url);
+    } catch (e) {
+      _logger.e("Recover verify email error: $e");
+      return ApiResponse(
+        isSuccess: false,
+        responseCode: -1,
+        responseData: null,
+        errorMessage: "Connection failed. Please try again.",
+      );
+    }
+  }
+
+  static Future<ApiResponse> recoverVerifyOTP({
+    required String email,
+    required String otp,
+  }) async {
+    try {
+      final String url = Urls.recoverVerifyOTPUrl(email, otp);
+      return await getRequest(url: url);
+    } catch (e) {
+      _logger.e("Recover verify OTP error: $e");
+      return ApiResponse(
+        isSuccess: false,
+        responseCode: -1,
+        responseData: null,
+        errorMessage: "Connection failed. Please try again.",
+      );
+    }
+  }
+
+  static Future<ApiResponse> recoverResetPassword({
+    required String email,
+    required String otp,
+    required String password,
+  }) async {
+    try {
+      final Map<String, dynamic> body = {
+        "email": email,
+        "OTP": otp,
+        "password": password,
+      };
+
+      return await postRequest(
+        url: Urls.recoverResetPasswordUrl,
+        body: body,
+      );
+    } catch (e) {
+      _logger.e("Recover reset password error: $e");
+      return ApiResponse(
+        isSuccess: false,
+        responseCode: -1,
+        responseData: null,
+        errorMessage: "Connection failed. Please try again.",
+      );
+    }
+  }
+
+
   static void _logRequest(String url, {Map<String, dynamic>? body}) {
     _logger.i(
       "URL => $url\n"
-      "Request Body : $body",
+          "Request Body : $body",
     );
   }
 
   static void _logRespose(String url, Response response) {
     _logger.i(
       "URL => $url\n"
-      "Status Code : ${response.statusCode}\n"
-      "Body : ${response.body}",
+          "Status Code : ${response.statusCode}\n"
+          "Body : ${response.body}",
     );
   }
 

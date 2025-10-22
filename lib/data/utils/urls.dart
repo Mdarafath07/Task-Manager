@@ -9,6 +9,11 @@
   static const String CancelledTaskListUrl = "$_baseUrl/listTaskByStatus/Cancelled";
   static const String CompletedTaskListUrl = "$_baseUrl/listTaskByStatus/Completed";
 
+
+  static String recoverVerifyEmailUrl(String email) => '$_baseUrl/RecoverVerifyEmail/$email';
+  static String recoverVerifyOTPUrl(String email, String otp) => '$_baseUrl/RecoverVerifyOTP/$email/$otp';
+  static const String recoverResetPasswordUrl = '$_baseUrl/RecoverResetPassword';
+
   static String updateTaskStatusUrl(String Id, String status) =>
       '$_baseUrl/updateTaskStatus/$Id/$status';
 
