@@ -5,6 +5,8 @@ import 'package:task_manager/ui/widgets/centered_progress_indicator.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 import 'package:task_manager/ui/widgets/snack_ber_message.dart';
 import 'package:task_manager/ui/widgets/tm_app_bar.dart';
+import 'package:provider/provider.dart';
+import '../../data/services/task_provider.dart';
 
 class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({super.key});
@@ -89,21 +91,19 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   }
 
   void _addNewTask() async {
+    final provider = Provider.of<TaskProvider>(context, listen: false);
     _addNewTaskInProgress = true;
     setState(() {});
-    Map<String, dynamic> requestBody = {
-      "title": _titleTEController.text.trim(),
-      "description": _descriptionTEController.text.trim(),
-      "status": "New",
-    };
-    final ApiResponse response = await ApiCaller.postRequest(
-      url: Urls.createTaskUrl,
-      body: requestBody,
+    final response = await provider.addTask(
+      title: _titleTEController.text.trim(),
+      description: _descriptionTEController.text.trim(),
     );
     _addNewTaskInProgress = false;
     setState(() {});
     if (response.isSuccess) {
       _clearTextFields();
+      provider.fetchNewTasks();
+      provider.fetchTaskStatusCount();
       showSnackBarMessage(context, "Task added successfully");
     } else {
       showSnackBarMessage(context, response.errorMessage!);

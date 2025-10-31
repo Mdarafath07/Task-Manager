@@ -3,6 +3,8 @@ import 'package:task_manager/data/models/task_model.dart';
 import 'package:task_manager/data/services/api_caller.dart';
 import 'package:task_manager/ui/widgets/centered_progress_indicator.dart';
 import 'package:task_manager/ui/widgets/snack_ber_message.dart';
+import 'package:provider/provider.dart';
+import '../../data/services/task_provider.dart';
 
 import '../../data/utils/urls.dart';
 
@@ -23,10 +25,10 @@ class TaskCard extends StatefulWidget {
   State<TaskCard> createState() => _TaskCardState();
 }
 
-bool _chnageStatusInProgress = false;
-bool _deleteInProgress = false;
-
 class _TaskCardState extends State<TaskCard> {
+  bool _chnageStatusInProgress = false;
+  bool _deleteInProgress = false;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -85,8 +87,7 @@ class _TaskCardState extends State<TaskCard> {
                     label: Text(widget.taskModel.status),
                     backgroundColor: widget.color ?? Colors.blue,
                     labelStyle: const TextStyle(color: Colors.white),
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   ),
                 ],
               ),
@@ -121,7 +122,6 @@ class _TaskCardState extends State<TaskCard> {
         ),
       ),
     );
-
   }
 
   void _showChangeStatusDialog() {
@@ -134,40 +134,24 @@ class _TaskCardState extends State<TaskCard> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                onTap: () {
-                  _chnageStatus("New");
-                },
+                onTap: () { _chnageStatus("New"); },
                 title: Text("New"),
-                trailing: widget.taskModel.status == 'New'
-                    ? Icon(Icons.done)
-                    : null,
+                trailing: widget.taskModel.status == 'New' ? Icon(Icons.done) : null,
               ),
               ListTile(
-                onTap: () {
-                  _chnageStatus("Progress");
-                },
+                onTap: () { _chnageStatus("Progress"); },
                 title: Text("Progress"),
-                trailing: widget.taskModel.status == 'Progress'
-                    ? Icon(Icons.done)
-                    : null,
+                trailing: widget.taskModel.status == 'Progress' ? Icon(Icons.done) : null,
               ),
               ListTile(
-                onTap: () {
-                  _chnageStatus("Cancelled");
-                },
+                onTap: () { _chnageStatus("Cancelled"); },
                 title: Text("Cancelled"),
-                trailing: widget.taskModel.status == 'Cancelled'
-                    ? Icon(Icons.done)
-                    : null,
+                trailing: widget.taskModel.status == 'Cancelled' ? Icon(Icons.done) : null,
               ),
               ListTile(
-                onTap: () {
-                  _chnageStatus("Completed");
-                },
+                onTap: () { _chnageStatus("Completed"); },
                 title: Text("Completed"),
-                trailing: widget.taskModel.status == 'Completed'
-                    ? Icon(Icons.done)
-                    : null,
+                trailing: widget.taskModel.status == 'Completed' ? Icon(Icons.done) : null,
               ),
             ],
           ),
@@ -177,34 +161,30 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   Future<void> _chnageStatus(String status) async {
-    if (status == widget.taskModel.status) {
-      return;
-    }
+    if (status == widget.taskModel.status) return;
     Navigator.pop(context);
-    _chnageStatusInProgress = true;
-    setState(() {});
-    final ApiResponse response = await ApiCaller.getRequest(
-      url: Urls.updateTaskStatusUrl(widget.taskModel.id, status),
+    setState(() { _chnageStatusInProgress = true; });
+    final provider = Provider.of<TaskProvider>(context, listen: false);
+    final response = await provider.updateTaskStatus(
+      widget.taskModel.id,
+      widget.taskModel.status,
+      status,
     );
-    _chnageStatusInProgress = false;
-    setState(() {});
+    setState(() { _chnageStatusInProgress = false; });
     if (response.isSuccess) {
-      widget.refreshParent();
+      // tasks are refreshed by provider
     } else {
       showSnackBarMessage(context, response.errorMessage!);
     }
   }
-  Future<void> _deleteTask() async {
 
-    _deleteInProgress = true;
-    setState(() {});
-    final ApiResponse response = await ApiCaller.getRequest(
-      url: Urls.deleteTaskUrl(widget.taskModel.id),
-    );
-    _deleteInProgress = false;
-    setState(() {});
+  Future<void> _deleteTask() async {
+    setState(() { _deleteInProgress = true; });
+    final provider = Provider.of<TaskProvider>(context, listen: false);
+    final response = await provider.deleteTask(widget.taskModel.id, widget.taskModel.status);
+    setState(() { _deleteInProgress = false; });
     if (response.isSuccess) {
-      widget.refreshParent();
+      // tasks are refreshed by provider
     } else {
       showSnackBarMessage(context, response.errorMessage!);
     }

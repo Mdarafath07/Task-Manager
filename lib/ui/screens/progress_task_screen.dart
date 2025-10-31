@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import '../../data/models/task_model.dart';
 import '../../data/services/api_caller.dart';
 import '../../data/utils/urls.dart';
+import '../widgets/centered_progress_indicator.dart';
 import '../widgets/snack_ber_message.dart';
 import '../widgets/task_card.dart';
+import 'package:provider/provider.dart';
+import '../../data/services/task_provider.dart';
 
 
 class ProgressTaskScreen extends StatefulWidget {
@@ -24,7 +27,8 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
   @override
   void initState() {
     super.initState();
-    _getAllProgressTask();
+    final provider = Provider.of<TaskProvider>(context, listen: false);
+    provider.fetchProgressTasks();
   }
 
 
@@ -49,26 +53,31 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Visibility(
-          visible: _getProgressTaskInProgress == false,
-          child: ListView.separated(
-            itemCount: _progressTaskList.length,
-            itemBuilder: (context, index) {
-              return TaskCard(
-                taskModel: _progressTaskList[index], refreshParent: () {
-                _getAllProgressTask();
-              }, color: Colors.grey,);
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 8,);
-            },
+    return Consumer<TaskProvider>(
+      builder: (context, provider, _) =>
+        Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Visibility(
+              visible: !provider.loadingProgress,
+              replacement:      CenteredProgressIndicator(),
+              child: ListView.separated(
+                itemCount: provider.progressTasks.length,
+                itemBuilder: (context, index) {
+                  return TaskCard(
+                    taskModel: provider.progressTasks[index],
+                    refreshParent: () {
+                      provider.fetchProgressTasks();
+                      provider.fetchTaskStatusCount();
+                    },
+                    color: Colors.grey,
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 8),
+              ),
+            ),
           ),
         ),
-      ),
-
     );
   }
 }

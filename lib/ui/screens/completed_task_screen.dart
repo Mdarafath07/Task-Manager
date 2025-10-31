@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import '../../data/models/task_model.dart';
 import '../../data/services/api_caller.dart';
 import '../../data/utils/urls.dart';
+import '../widgets/centered_progress_indicator.dart';
 import '../widgets/snack_ber_message.dart';
 import '../widgets/task_card.dart';
+import 'package:provider/provider.dart';
+import '../../data/services/task_provider.dart';
 
 
 class CompletedTaskScreen extends StatefulWidget {
@@ -24,7 +27,8 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
   @override
   void initState() {
     super.initState();
-    _getAllCompletedTask();
+    final provider = Provider.of<TaskProvider>(context, listen: false);
+    provider.fetchCompletedTasks();
   }
 
 
@@ -49,26 +53,31 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Visibility(
-          visible: _getCompletedTaskInProgress == false,
-          child: ListView.separated(
-            itemCount: _completedTaskList.length,
-            itemBuilder: (context, index) {
-              return TaskCard(
-                taskModel: _completedTaskList[index], refreshParent: () {
-                _getAllCompletedTask();
-              }, color: Colors.green,);
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 8,);
-            },
+    return Consumer<TaskProvider>(
+      builder: (context, provider, _) =>
+        Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Visibility(
+              visible: !provider.loadingCompleted,
+              replacement: CenteredProgressIndicator(),
+              child: ListView.separated(
+                itemCount: provider.completedTasks.length,
+                itemBuilder: (context, index) {
+                  return TaskCard(
+                    taskModel: provider.completedTasks[index],
+                    refreshParent: () {
+                      provider.fetchCompletedTasks();
+                      provider.fetchTaskStatusCount();
+                    },
+                    color: Colors.green,
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 8),
+              ),
+            ),
           ),
         ),
-      ),
-
     );
   }
 }
